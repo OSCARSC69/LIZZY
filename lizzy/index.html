@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>mi Princesa Lizzy</title>
+
+<style>
+body{
+    margin:0;
+    overflow:hidden;
+    background: radial-gradient(circle at top, #ffc1da, #ff8fb7);
+    font-family: Arial, Helvetica, sans-serif;
+    animation: gradientShift 10s ease infinite;
+}
+
+/* Animación del fondo */
+@keyframes gradientShift{
+    0%{ background: radial-gradient(circle at top, #ffc1da, #ff8fb7); }
+    25%{ background: radial-gradient(circle at top right, #ffb3d9, #ff79a8); }
+    50%{ background: radial-gradient(circle at bottom, #ffd4e5, #ffa5c7); }
+    75%{ background: radial-gradient(circle at top left, #ffe0ee, #ff8fb7); }
+    100%{ background: radial-gradient(circle at top, #ffc1da, #ff8fb7); }
+}
+
+/* Animación del título */
+h1{
+    position:absolute;
+    width:100%;
+    text-align:center;
+    top:15%;
+    transform:translateY(-50%);
+    font-size:60px;
+    color:white;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+    pointer-events:none;
+    animation: titlePulse 2s ease-in-out infinite;
+    z-index:100;
+}
+
+@keyframes titlePulse{
+    0%, 100%{ 
+        transform: translateY(-50%) scale(1); 
+        text-shadow: 2px 2px 10px rgba(0,0,0,0.3), 0 0 20px rgba(255,255,255,0.5);
+    }
+    50%{ 
+        transform: translateY(-50%) scale(1.05); 
+        text-shadow: 2px 2px 15px rgba(0,0,0,0.4), 0 0 30px rgba(255,255,255,0.8);
+    }
+}
+
+.balloon, .heart{
+    position:absolute;
+    padding:12px 18px;
+    border-radius:40px;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+    user-select:none;
+    animation: floatUp linear forwards;
+    box-shadow:0 10px 15px rgba(0,0,0,0.2);
+    transition: transform 0.1s;
+}
+
+.balloon:hover, .heart:hover{
+    transform: scale(1.1);
+}
+
+.heart{
+    font-size:22px;
+    padding:10px 14px;
+    border-radius:50%;
+}
+
+/* Fotos flotantes */
+.photo{
+    position:absolute;
+    width:120px;
+    height:120px;
+    border-radius:15px;
+    cursor:pointer;
+    user-select:none;
+    animation: floatUp linear forwards;
+    box-shadow:0 10px 20px rgba(0,0,0,0.3);
+    transition: transform 0.1s;
+    border: 4px solid white;
+    object-fit:cover;
+}
+
+.photo:hover{
+    transform: scale(1.15);
+}
+
+@keyframes floatUp{
+    from{ transform: translateY(100vh) rotate(0deg); }
+    to{ transform: translateY(-120vh) rotate(360deg); }
+}
+
+/* Partículas de fondo */
+.particle{
+    position:absolute;
+    font-size:12px;
+    opacity:0.3;
+    animation: floatParticle linear infinite;
+    pointer-events:none;
+}
+
+@keyframes floatParticle{
+    from{ 
+        transform: translateY(100vh) rotate(0deg); 
+        opacity:0.3;
+    }
+    to{ 
+        transform: translateY(-20vh) rotate(360deg); 
+        opacity:0;
+    }
+}
+
+/* Partículas de explosión */
+.explosion-particle{
+    position:absolute;
+    font-size:20px;
+    pointer-events:none;
+    animation: explode 0.8s ease-out forwards;
+}
+
+@keyframes explode{
+    0%{ 
+        transform: translate(0, 0) scale(1); 
+        opacity:1;
+    }
+    100%{ 
+        transform: translate(var(--tx), var(--ty)) scale(0); 
+        opacity:0;
+    }
+}
+
+/* Panel de solicitudes */
+.request-panel{
+    position:fixed;
+    bottom:20px;
+    left:50%;
+    transform:translateX(-50%);
+    background:rgba(255,255,255,0.95);
+    padding:20px 30px;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.3);
+    z-index:1000;
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+    justify-content:center;
+    max-width:90%;
+}
+
+.request-btn{
+    padding:12px 24px;
+    border:none;
+    border-radius:25px;
+    font-weight:bold;
+    font-size:14px;
+    cursor:pointer;
+    transition: all 0.3s;
+    color:white;
+    box-shadow:0 4px 10px rgba(0,0,0,0.2);
+}
+
+.request-btn:hover{
+    transform:translateY(-3px);
+    box-shadow:0 6px 15px rgba(0,0,0,0.3);
+}
+
+.btn-date{
+    background:linear-gradient(135deg, #ff6b9d, #c44569);
+}
+
+.btn-picante{
+    background:linear-gradient(135deg, #ff5252, #b33939);
+}
+
+.btn-comida{
+    background:linear-gradient(135deg, #ffa726, #fb8c00);
+}
+
+.btn-apapachos{
+    background:linear-gradient(135deg, #ab47bc, #8e24aa);
+}
+
+.btn-moto{
+    background:linear-gradient(135deg, #26c6da, #0097a7);
+}
+
+.btn-fotos{
+    background:linear-gradient(135deg, #66bb6a, #43a047);
+}
+
+@media (max-width: 600px){
+    .request-panel{
+        flex-direction:column;
+        gap:10px;
+        padding:15px 20px;
+    }
+    .request-btn{
+        width:100%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<h1>mi Princesa Lizzy 💖</h1>
+
+<!-- Panel de Solicitudes -->
+<div class="request-panel">
+    <button class="request-btn btn-date" onclick="sendRequest('date')">💕 Solicitar Date</button>
+    <button class="request-btn btn-picante" onclick="sendRequest('picante')">🔥 Solicitar Cita Picante</button>
+    <button class="request-btn btn-comida" onclick="sendRequest('comida')">🍝 Solicitar Comidita</button>
+    <button class="request-btn btn-apapachos" onclick="sendRequest('apapachos')">🤗 Solicitar Apapachos</button>
+    <button class="request-btn btn-moto" onclick="sendRequest('moto')">🏍️ Night Bike</button>
+    <button class="request-btn btn-fotos" onclick="sendRequest('fotos')">📸 Date de Fotos</button>
+</div>
+
+<!-- canción -->
+<audio id="music" loop>
+  <source src="bachata.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const messages = [
+    "Eres la más bella",
+    "Me encantas",
+    "Te amo",
+    "Mi lugar favorito es contigo",
+    "Eres mi persona favorita",
+    "Te amito linda bella",
+    "cerezita",
+    "te amo de aqui a la luna con pasos de tortuga",
+    "te adoro",
+    "si no me quieres te pego",
+    "amo tus besitos a la hora de dormir",
+    "amo tus comidas en especial el spaggethi rojo",
+    "La mas bella de esta vida"
+];
+
+let popped = 0;
+let musicStarted = false;
+
+function random(min, max){
+    return Math.random() * (max - min) + min;
+}
+
+function startMusic(){
+    if(!musicStarted){
+        document.getElementById("music").play();
+        musicStarted = true;
+    }
+}
+
+// Función para enviar solicitudes
+function sendRequest(type){
+    const messages = {
+        'date': '💕 Hola mi amor! Te estoy solicitando un DATE ❤️',
+        'picante': '🔥 Hola bb! Te estoy solicitando una CITA PICANTE 😏🌶️',
+        'comida': '🍝 Hola cilito! Te estoy solicitando COMIDITA rica 😋',
+        'apapachos': '🤗 Hola mi vida! Te estoy solicitando APAPACHOS 🥰',
+        'moto': '🏍️ Hola GP! Quiero que salgamos de NIGHT BIKE 🌙✨ Una vuelta en moto bajo las estrellas 💫',
+        'fotos': '📸 Hola mi amor! Quiero un DATE DE FOTOS contigo 📷💕 Para tener más recuerdos hermosos juntos 🥰'
+    };
+    
+    const whatsappNumber = '523322876956'; // Formato internacional
+    const message = encodeURIComponent(messages[type]);
+    const whatsappURL = `https://wa.me/${whatsappNumber}?text=${message}`;
+    
+    // Abrir WhatsApp
+    window.open(whatsappURL, '_blank');
+    
+    // También preparar email (opcional)
+    const email = 'polioscar1@gmail.com';
+    const subject = encodeURIComponent('Solicitud desde la página de Lizzy');
+    const body = encodeURIComponent(messages[type]);
+    const mailtoURL = `mailto:${email}?subject=${subject}&body=${body}`;
+    
+    // Opcional: descomentar si también quieres abrir el email
+    // setTimeout(() => window.open(mailtoURL, '_blank'), 1000);
+}
+
+// Efecto de explosión
+function createExplosion(x, y){
+    const explosionEmojis = ['💗', '💖', '💕', '✨', '⭐', '🌟', '💝', '🎀'];
+    const particleCount = 15;
+    
+    for(let i = 0; i < particleCount; i++){
+        const particle = document.createElement("div");
+        particle.className = "explosion-particle";
+        particle.innerText = explosionEmojis[Math.floor(Math.random() * explosionEmojis.length)];
+        
+        const angle = (Math.PI * 2 * i) / particleCount;
+        const distance = random(50, 150);
+        const tx = Math.cos(angle) * distance;
+        const ty = Math.sin(angle) * distance;
+        
+        particle.style.left = x + "px";
+        particle.style.top = y + "px";
+        particle.style.setProperty('--tx', tx + 'px');
+        particle.style.setProperty('--ty', ty + 'px');
+        
+        document.body.appendChild(particle);
+        
+        setTimeout(() => particle.remove(), 800);
+    }
+}
+
+function createBalloon(){
+    const balloon = document.createElement("div");
+    balloon.className = "balloon";
+    balloon.innerText = messages[Math.floor(Math.random()*messages.length)];
+
+    balloon.style.left = random(0, 80) + "vw";
+    balloon.style.background = `hsl(${random(0,360)},70%,60%)`;
+    balloon.style.animationDuration = random(6, 12) + "s";
+
+    balloon.onclick = (e) => {
+        const rect = balloon.getBoundingClientRect();
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height / 2;
+        
+        createExplosion(x, y);
+        balloon.remove();
+        popped++;
+
+        if(popped >= 4){
+            startMusic();
+        }
+
+        createBalloon();
+    };
+
+    document.body.appendChild(balloon);
+
+    setTimeout(() => {
+        if(document.body.contains(balloon)){
+            balloon.remove();
+            createBalloon();
+        }
+    }, 12000);
+}
+
+function createHeart(){
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerText = "💗";
+
+    heart.style.left = random(0, 90) + "vw";
+    heart.style.background = `hsl(${random(320,360)},70%,65%)`;
+    heart.style.animationDuration = random(5, 10) + "s";
+
+    heart.onclick = (e) => {
+        const rect = heart.getBoundingClientRect();
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height / 2;
+        
+        createExplosion(x, y);
+        heart.remove();
+        popped++;
+
+        if(popped >= 4){
+            startMusic();
+        }
+
+        createHeart();
+    };
+
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+        if(document.body.contains(heart)){
+            heart.remove();
+            createHeart();
+        }
+    }, 10000);
+}
+
+// Fotos flotantes
+function createPhoto(photoNumber){
+    const photo = document.createElement("img");
+    photo.className = "photo";
+    photo.src = `foto${photoNumber}.jpg`;
+    
+    photo.style.left = random(0, 85) + "vw";
+    photo.style.animationDuration = random(8, 15) + "s";
+    
+    photo.onclick = (e) => {
+        const rect = photo.getBoundingClientRect();
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height / 2;
+        
+        createExplosion(x, y);
+        photo.remove();
+        popped++;
+
+        if(popped >= 4){
+            startMusic();
+        }
+
+        // Crear nueva foto
+        setTimeout(() => createPhoto(photoNumber), 1000);
+    };
+    
+    // Si la imagen no carga, usar un placeholder
+    photo.onerror = () => {
+        photo.style.background = `hsl(${random(300,360)},70%,75%)`;
+        photo.style.display = 'flex';
+        photo.style.alignItems = 'center';
+        photo.style.justifyContent = 'center';
+        photo.innerHTML = `<span style="font-size:40px">📷</span>`;
+    };
+
+    document.body.appendChild(photo);
+
+    setTimeout(() => {
+        if(document.body.contains(photo)){
+            photo.remove();
+            createPhoto(photoNumber);
+        }
+    }, 15000);
+}
+
+// Partículas flotantes de fondo
+function createBackgroundParticle(){
+    const particle = document.createElement("div");
+    particle.className = "particle";
+    
+    const particleTypes = ['✨', '⭐', '💫', '🌟', '💗', '💕'];
+    particle.innerText = particleTypes[Math.floor(Math.random() * particleTypes.length)];
+    
+    particle.style.left = random(0, 100) + "vw";
+    particle.style.animationDuration = random(15, 25) + "s";
+    particle.style.animationDelay = random(0, 5) + "s";
+    
+    document.body.appendChild(particle);
+    
+    setTimeout(() => {
+        particle.remove();
+        createBackgroundParticle();
+    }, parseFloat(particle.style.animationDuration) * 1000);
+}
+
+// Inicializar partículas de fondo
+for(let i = 0; i < 20; i++){
+    setTimeout(() => createBackgroundParticle(), i * 300);
+}
+
+// Inicializar globos y corazones
+for(let i=0;i<6;i++){
+    setTimeout(createBalloon, i*400);
+}
+
+for(let i=0;i<4;i++){
+    setTimeout(createHeart, i*700);
+}
+
+// Inicializar las 13 fotos
+for(let i=1; i<=13; i++){
+    setTimeout(() => createPhoto(i), i * 500);
+}
+</script>
+
+</body>
+</html>
